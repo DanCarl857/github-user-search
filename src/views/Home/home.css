@@ -1,0 +1,21 @@
+.home-container {
+    min-height: 100vh;
+    font-size: calc(10px + 2vmin);
+    padding-top: 30px;
+}
+
+.label {
+    font-size: 16px;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.footer-text {
+    text-align: center;
+    margin: auto;
+    font-size: 18px;
+}
