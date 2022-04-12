@@ -1,5 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+
+import { getRange } from '../../utils/getRange';
 import './pagination.css';
 
 type OwnProps = {
@@ -21,11 +23,13 @@ export function Pagination ({
     onPageChanged
 }: Props) {
     const [currentPage, setCurrentPage] = useState(1);
+    totalRecords = typeof totalRecords === "number" ? totalRecords : 0;
     pageNeighbours = typeof pageNeighbours === "number" ? Math.max(0, Math.min(pageNeighbours, 2)) : 0;
     let totalPages = Math.ceil(totalRecords/pageLimit);
 
     useEffect(() => {
         gotoPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const gotoPage = (page: number) => {
@@ -67,7 +71,7 @@ export function Pagination ({
             const startPage = leftBound > 2 ? leftBound : 2;
             const endPage = rightBound < beforeLastPage ? rightBound : beforeLastPage;
 
-            pages = range(startPage, endPage);
+            pages = getRange(startPage, endPage);
 
             const pagesCount = pages.length;
             const singleSpillOffset = totalNumbers - pagesCount - 1;
@@ -79,10 +83,10 @@ export function Pagination ({
             const rightSpillPage = RIGHT_PAGE;
 
             if (leftSpill && !rightSpill) {
-                const extraPages = range(startPage - singleSpillOffset, startPage - 1);
+                const extraPages = getRange(startPage - singleSpillOffset, startPage - 1);
                 pages = [leftSpillPage, ...extraPages, ...pages];
             } else if (!leftSpill && rightSpill) {
-                const extraPages = range(endPage + 1, endPage + singleSpillOffset);
+                const extraPages = getRange(endPage + 1, endPage + singleSpillOffset);
                 pages = [...pages, ...extraPages, rightSpillPage];
             } else if (leftSpill && rightSpill) {
                 pages = [leftSpillPage, ...pages, rightSpillPage];
@@ -91,11 +95,8 @@ export function Pagination ({
             return [1, ...pages, totalPages];
         }
 
-        return range(1, totalPages);   
+        return getRange(1, totalPages);   
     }
-
-    // if (totalRecords) return null;
-    // if (totalPages === 1) return null;
     const pages = fetchPageNumbers();
 
     return (
@@ -150,14 +151,3 @@ export function Pagination ({
     )
 };
 
-const range = (from: number, to: number, step = 1) => {
-    let i = from;
-    const range = [];
-  
-    while (i <= to) {
-      range.push(i);
-      i += step;
-    }
-  
-    return range;
-};

@@ -5,14 +5,6 @@ ul {
     cursor: pointer;
 }
 
-.user-container {
-    border: 1px solid rgb(206, 206, 206);
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: rgba(66, 66, 66, 0.3) 0px 19px 38px, rgba(82, 82, 82, 0.22) 0px 15px 12px;
-    margin: 30px 0px;
-}
-
 .header-container {
     display: flex;
     flex-direction: row;

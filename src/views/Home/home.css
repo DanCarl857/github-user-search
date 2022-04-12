@@ -23,3 +23,8 @@
     margin: auto;
     font-size: 18px;
 }
+
+.info {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
