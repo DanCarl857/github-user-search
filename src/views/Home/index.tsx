@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
-import { Form, Container } from 'react-bootstrap';
+import { Form, Container, Alert } from 'react-bootstrap';
 import debounce from 'lodash.debounce';
-import axios from 'axios';
 
 import './home.css';
 import * as components from '../../components/UsersList';
@@ -12,6 +11,7 @@ import { getData } from '../../utils/getData';
 export function Home() {
     const [data, setUsersData] = useState<DataTypeFromApi>();
     const [username, setUsername] = useState<string | null>(null);
+    const [showMessage, setShowMessage] = useState(false);
 
     const debounceChangeHandler = useMemo(() => debounce((event: React.SyntheticEvent<EventTarget>) => {
         event.preventDefault();
@@ -20,12 +20,17 @@ export function Home() {
     }, 300), []);
 
     const getUsersData = async (username: string) => {
+        if (!username) {
+            setUsersData(undefined);
+            return;
+        }
         const data = await getData(constants.BASE_URL, username);
-        if (data) {
+        if (Object.keys(data).length !== 0) {
             setUsername(username);
             setUsersData(data);
         } else {
             setUsersData(undefined);
+            setShowMessage(true);
         }
     }
 
@@ -45,7 +50,12 @@ export function Home() {
                     </Form.Group>
                 </Form>
                 <hr />
-                {(data && username) && <components.UsersList data={data} username={username} />}
+                {!showMessage
+                    ? (data && username) && <components.UsersList data={data} username={username} /> 
+                    : <Alert variant='info' className="info">
+                        <p>This is a free api and so we can't make too many requests in a short period of time due to rate limiting 😉.</p>
+                        <p>Reload the page and try again in a few seconds 🤗!!</p>
+                    </Alert>}
             </Container>
             <div className="footer">
               <span className="footer-text">Built with &hearts; by Daniel Carlson</span>
