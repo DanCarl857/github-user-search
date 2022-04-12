@@ -7,6 +7,7 @@ import './home.css';
 import * as components from '../../components/UsersList';
 import * as constants from '../../constants';
 import { DataTypeFromApi } from '../../types';
+import { getData } from '../../utils/getData';
 
 export function Home() {
     const [data, setUsersData] = useState<DataTypeFromApi>();
@@ -15,17 +16,15 @@ export function Home() {
     const debounceChangeHandler = useMemo(() => debounce((event: React.SyntheticEvent<EventTarget>) => {
         event.preventDefault();
         let value = (event.target as HTMLInputElement).value;
-        getData(value);
+        getUsersData(value);
     }, 300), []);
 
-    const getData = async (username: string) => {
-        try {
-            let response = await axios.get(`${constants.BASE_URL}?q=${username}`);
-            response.data && setUsersData(response.data);
+    const getUsersData = async (username: string) => {
+        const data = await getData(constants.BASE_URL, username);
+        if (data) {
             setUsername(username);
-        } catch (err) {
-            console.log('[GITHUB APP]: No users found with that username');
-            // When no user is found, nothing should be showing on the users list
+            setUsersData(data);
+        } else {
             setUsersData(undefined);
         }
     }

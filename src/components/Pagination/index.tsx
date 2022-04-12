@@ -21,6 +21,7 @@ export function Pagination ({
     onPageChanged
 }: Props) {
     const [currentPage, setCurrentPage] = useState(1);
+    totalRecords = typeof totalRecords === "number" ? totalRecords : 0;
     pageNeighbours = typeof pageNeighbours === "number" ? Math.max(0, Math.min(pageNeighbours, 2)) : 0;
     let totalPages = Math.ceil(totalRecords/pageLimit);
 
@@ -93,9 +94,6 @@ export function Pagination ({
 
         return range(1, totalPages);   
     }
-
-    // if (totalRecords) return null;
-    // if (totalPages === 1) return null;
     const pages = fetchPageNumbers();
 
     return (

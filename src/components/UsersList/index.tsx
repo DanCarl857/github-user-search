@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 import { User } from '../User';
 import { DataTypeFromApi, UserType } from '../../types';
 import './usersList.css';
 import { Pagination } from '../Pagination';
 import * as constants from '../../constants';
+import { getData } from '../../utils/getData';
 
 type OwnProps = {
     data: DataTypeFromApi;
@@ -15,22 +15,20 @@ type OwnProps = {
 type Props = OwnProps;
 
 export function UsersList ({ data, username }: Props) {
-    const [users, setUsers] = useState<UserType[]>([]);
+    const [, setUsers] = useState<UserType[]>([]);
     const [currentUsers, setCurrentUsers] = useState<UserType[]>([]);
 
     useEffect(() => {
-        console.log(data.items);
         setUsers(data.items);
         setCurrentUsers(data.items);
     }, [data.items]);
 
     const onPageChanged = async (currentPage: number, pageLimit: number) => {
-        try {
-            let response = await axios.get(`${constants.BASE_URL}?q=${username}&page=${currentPage}&limit=${pageLimit}`);
-            response.data && setCurrentUsers(response.data.items);
-        } catch (err) {
-            console.log('[GITHUB APP]: No users found with that username');
-            // When no user is found, nothing should be showing on the users list
+        let data = await getData(`${constants.BASE_URL}?q=${username}&page=${currentPage}&limit=${pageLimit}`, username);
+        if (data) {
+            setCurrentUsers(data.items);
+        } else {
+            setCurrentUsers([]);
         }
     }
 
@@ -48,10 +46,10 @@ export function UsersList ({ data, username }: Props) {
                     onPageChanged={onPageChanged}
                 />
             </div>
-            <ul>
-                {currentUsers.map((user) => {
+            <ul className="row">
+                {currentUsers && currentUsers.map((user) => {
                     return (
-                        <li className="user-container">
+                        <li key={user.id} className="col-4 user-container">
                             <User user={user} />
                         </li>
                     )
