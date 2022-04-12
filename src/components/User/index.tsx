@@ -15,7 +15,7 @@ export function User ({ user }: Props) {
         <Card className="user-card">
             <img src={user.avatar_url} className="user-image" alt="user avatar" />
             <Card.Body className="user-content">
-                <Card.Title>{user.login}</Card.Title>
+                <Card.Title>Username: {user.login}</Card.Title>
                 <Card.Text>{user.gists_url}</Card.Text>
             </Card.Body>
         </Card>

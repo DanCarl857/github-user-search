@@ -12,3 +12,16 @@ ul {
     box-shadow: rgba(66, 66, 66, 0.3) 0px 19px 38px, rgba(82, 82, 82, 0.22) 0px 15px 12px;
     margin: 30px 0px;
 }
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: baseline;
+}
+
+.header {
+    flex: 1;
+    color: #445565 !important;
+    font-size: 2rem;
+    font-weight: 900;
+}

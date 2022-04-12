@@ -1,6 +1,6 @@
 import { UsersList } from './UsersList';
 import { User } from './User';
-import { Pagination } from './Pagintation';
+import { Pagination } from './Pagination';
 
 export {
     UsersList,

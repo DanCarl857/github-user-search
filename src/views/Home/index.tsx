@@ -6,9 +6,11 @@ import axios from 'axios';
 import './home.css';
 import * as components from '../../components/UsersList';
 import * as constants from '../../constants';
+import { DataTypeFromApi } from '../../types';
 
 export function Home() {
-    const [data, setUsersData] = useState(null);
+    const [data, setUsersData] = useState<DataTypeFromApi>();
+    const [username, setUsername] = useState<string | null>(null);
 
     const debounceChangeHandler = useMemo(() => debounce((event: React.SyntheticEvent<EventTarget>) => {
         event.preventDefault();
@@ -16,14 +18,15 @@ export function Home() {
         getData(value);
     }, 300), []);
 
-    const getData = async (username: String) => {
+    const getData = async (username: string) => {
         try {
             let response = await axios.get(`${constants.BASE_URL}?q=${username}`);
             response.data && setUsersData(response.data);
+            setUsername(username);
         } catch (err) {
             console.log('[GITHUB APP]: No users found with that username');
             // When no user is found, nothing should be showing on the users list
-            setUsersData(null);
+            setUsersData(undefined);
         }
     }
 
@@ -43,7 +46,7 @@ export function Home() {
                     </Form.Group>
                 </Form>
                 <hr />
-                {data && <components.UsersList data={data} />}
+                {(data && username) && <components.UsersList data={data} username={username} />}
             </Container>
             <div className="footer">
               <span className="footer-text">Built with &hearts; by Daniel Carlson</span>
