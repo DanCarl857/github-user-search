@@ -15,7 +15,7 @@ Given more time,
 
 ## Deploy
 
-App is currently deployed: [https://github-app-649a5.web.app/](https://github-app-649a5.web.app/)
+App is currently deployed: [https://simple-github-app.web.app/](https://simple-github-app.web.app/)
 
 ## Running the app
 
